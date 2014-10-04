@@ -1,0 +1,24 @@
+{
+    "id": "elasticsearch",
+    "cmd": "cd elasticsearch-mesos* && ./configurator.py elasticsearch 2 config/elasticsearch.yml && bin/elasticsearch",
+    "cpus": 0.5,
+    "mem": 2048.0,
+    "disk": 1000,
+    "env": {
+        "MARATHON_HOST": "hadoop-ha-1",
+        "MARATHON_PORT": 8773,
+        "ES_SHARDS_NO": 10,
+        "ES_REPLICAS_NO": 3,
+        "ES_CLUSTER_NAME": "hadoop"
+    },
+    "constraints": [
+        ["hostname", "UNIQUE"]
+    ],
+    "instances": 3,
+    "ports": [
+        9200, 9300
+    ],
+    "uris": [
+        "http://localhost/elasticsearch-mesos-1.3.4.tgz"
+    ]
+}

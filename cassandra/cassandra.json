@@ -1,0 +1,24 @@
+{
+    "id": "cassandra",
+    "cmd": "cd cassandra-mesos* && ./configurator.py cassandra 2 conf/cassandra.yaml && bin/cassandra -f",
+    "cpus": 0.5,
+    "mem": 2048.0,
+    "disk": 1000,
+    "env": {
+        "MARATHON_HOST": "hadoop-ha-1",
+        "MARATHON_PORT": 8773,
+        "CASSANDRA_NUM_TOKENS": 256,
+        "CASSANDRA_CLUSTER_NAME": "hadoop",
+        "CASSANDRA_STORE_PATH": "/mnt/lib/cassandra"
+    },
+    "constraints": [
+        ["hostname", "UNIQUE"]
+    ],
+    "instances": 3,
+    "ports": [
+        9160, 9042, 7000, 7199
+    ],
+    "uris": [
+        "http://localhost/cassandra-mesos-2.1.0.tgz"
+    ]
+}
