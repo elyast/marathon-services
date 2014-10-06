@@ -140,10 +140,10 @@ index.number_of_replicas: $ES_REPLICAS_NO
 
 # Path to directory containing configuration (this file and logging.yml):
 #
-path.conf: es/conf
+#path.conf: es/conf
 # Path to directory where to store index data allocated for this node.
 #
-path.data: es/data
+path.data: $ES_STORE_PATH/$ES_CLUSTER_NAME/data
 #
 # Can optionally include more than one location, causing data to be striped across
 # the locations (a la RAID 0) on a file level, favouring locations with most free
@@ -152,13 +152,13 @@ path.data: es/data
 #path.data: /path/to/data1,/path/to/data2
 # Path to temporary files:
 #
-path.work: es/work
+path.work: $ES_STORE_PATH/$ES_CLUSTER_NAME/work
 # Path to log files:
 #
-path.logs: es/logs
+path.logs: $ES_STORE_PATH/$ES_CLUSTER_NAME/logs
 # Path to where plugins are installed:
 #
-path.plugins: es/plugins
+path.plugins: $ES_STORE_PATH/$ES_CLUSTER_NAME/plugins
 
 
 #################################### Plugin ###################################
