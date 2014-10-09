@@ -9,7 +9,8 @@
         "MARATHON_PORT": 8773,
         "ES_SHARDS_NO": 10,
         "ES_REPLICAS_NO": 3,
-        "ES_CLUSTER_NAME": "hadoop"
+        "ES_CLUSTER_NAME": "hadoop",
+        "ES_STORE_PATH": "/tmp"
     },
     "constraints": [
         ["hostname", "UNIQUE"]
@@ -19,6 +20,6 @@
         9200, 9300
     ],
     "uris": [
-        "http://localhost/elasticsearch-mesos-1.3.4.tgz"
+        "http://localhost/elasticsearch-mesos-1.3.4_1.tgz"
     ]
 }

@@ -7,7 +7,7 @@
 
 # The name of the cluster. This is mainly used to prevent machines in
 # one logical cluster from joining another.
-cluster_name: '$CASSANDRA_CLUSTER_NAME'
+cluster_name: '${CASSANDRA_CLUSTER_NAME}'
 
 # This defines the number of tokens randomly assigned to this node on the ring
 # The more tokens, relative to other nodes, the larger the proportion of data
@@ -22,7 +22,7 @@ cluster_name: '$CASSANDRA_CLUSTER_NAME'
 #
 # If you already have a cluster with 1 token per node, and wish to migrate to
 # multiple tokens per node, see http://wiki.apache.org/cassandra/Operations
-num_tokens: $CASSANDRA_NUM_TOKENS
+num_tokens: ${CASSANDRA_NUM_TOKENS}
 
 # initial_token allows you to specify tokens manually.  While you can use # it with
 # vnodes (num_tokens > 1, above) -- in which case you should provide a
@@ -96,12 +96,12 @@ partitioner: org.apache.cassandra.dht.Murmur3Partitioner
 # the configured compaction strategy.
 # If not set, the default directory is $CASSANDRA_HOME/data/data.
 data_file_directories:
-    - $CASSANDRA_STORE_PATH/$CASSANDRA_CLUSTER_NAME/data
+    - ${CASSANDRA_STORE_PATH}/${CASSANDRA_CLUSTER_NAME}/data
 
 # commit log.  when running on magnetic HDD, this should be a
 # separate spindle than the data directories.
 # If not set, the default directory is $CASSANDRA_HOME/data/commitlog.
-commitlog_directory: $CASSANDRA_STORE_PATH/$CASSANDRA_CLUSTER_NAME/commitlog
+commitlog_directory: ${CASSANDRA_STORE_PATH}/${CASSANDRA_CLUSTER_NAME}/commitlog
 
 # policy for data disk failures:
 # stop_paranoid: shut down gossip and Thrift even for single-sstable errors.
@@ -116,7 +116,7 @@ disk_failure_policy: stop
 # policy for commit disk failures:
 # stop: shut down gossip and Thrift, leaving the node effectively dead, but
 #       can still be inspected via JMX.
-# stop_commit: shutdown the commit log, letting writes collect but 
+# stop_commit: shutdown the commit log, letting writes collect but
 #              continuing to service reads, as in pre-2.0.5 Cassandra
 # ignore: ignore fatal errors and let the batches fail
 commit_failure_policy: stop
@@ -212,7 +212,7 @@ counter_cache_save_period: 7200
 
 # saved caches
 # If not set, the default directory is $CASSANDRA_HOME/data/saved_caches.
-saved_caches_directory: $CASSANDRA_STORE_PATH/$CASSANDRA_CLUSTER_NAME/saved_caches
+saved_caches_directory: ${CASSANDRA_STORE_PATH}/${CASSANDRA_CLUSTER_NAME}/saved_caches
 
 # commitlog_sync may be either "periodic" or "batch."
 # When in batch mode, Cassandra won't ack writes until the commit log
@@ -256,7 +256,7 @@ seed_provider:
           # seeds is actually a comma-delimited list of addresses.
           # Ex: "<ip1>,<ip2>,<ip3>"
           # Will be substituted by Cassandra Mesos with the actual node list
-          - seeds: "$MARATHON_SEED_NODES"
+          - seeds: "${MARATHON_SEED_NODES}"
 
 # For workloads with more data than can fit in memory, Cassandra's
 # bottleneck will be reads that need to fetch data from
@@ -277,7 +277,7 @@ concurrent_counter_writes: 32
 # the smaller of 1/4 of heap or 512MB.
 # file_cache_size_in_mb: 512
 
-# Total permitted memory to use for memtables. Cassandra will stop 
+# Total permitted memory to use for memtables. Cassandra will stop
 # accepting writes when the limit is exceeded until a flush completes,
 # and will trigger a flush based on memtable_cleanup_threshold
 # If omitted, Cassandra will set both to 1/4 the size of the heap.
@@ -312,11 +312,11 @@ memtable_allocation_type: heap_buffers
 
 # This sets the amount of memtable flush writer threads.  These will
 # be blocked by disk io, and each one will hold a memtable in memory
-# while blocked. 
+# while blocked.
 #
 # memtable_flush_writers defaults to the smaller of (number of disks,
 # number of cores), with a minimum of 2 and a maximum of 8.
-# 
+#
 # If your data directories are backed by SSD, you should increase this
 # to the number of cores.
 #memtable_flush_writers: 8
@@ -397,7 +397,7 @@ start_rpc: true
 #
 # Note that unlike listen_address, you can specify 0.0.0.0, but you must also
 # set broadcast_rpc_address to a value other than 0.0.0.0.
-rpc_address: localhost
+rpc_address: 0.0.0.0
 # port for Thrift to listen for clients on
 rpc_port: 9160
 
@@ -405,7 +405,7 @@ rpc_port: 9160
 # be set to 0.0.0.0. If left blank, this will be set to the value of
 # rpc_address. If rpc_address is set to 0.0.0.0, broadcast_rpc_address must
 # be set.
-# broadcast_rpc_address: 1.2.3.4
+broadcast_rpc_address: ${WORKER_HOST_ADDRESS}
 
 # enable or disable keepalive on rpc/native connections
 rpc_keepalive: true
@@ -517,7 +517,7 @@ batch_size_warn_threshold_in_kb: 5
 #
 # concurrent_compactors defaults to the smaller of (number of disks,
 # number of cores), with a minimum of 2 and a maximum of 8.
-# 
+#
 # If your data directories are backed by SSD, you should increase this
 # to the number of cores.
 #concurrent_compactors: 1
@@ -532,7 +532,7 @@ compaction_throughput_mb_per_sec: 16
 
 # When compacting, the replacement sstable(s) can be opened before they
 # are completely written, and used in place of the prior sstables for
-# any range that has been written. This helps to smoothly transfer reads 
+# any range that has been written. This helps to smoothly transfer reads
 # between the sstables, reducing page cache churn and keeping hot rows hot
 sstable_preemptive_open_interval_in_mb: 50
 
