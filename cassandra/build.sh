@@ -2,7 +2,7 @@
 
 # Our cassandra-mesos project version follows the Cassandra version number
 CASSVERSION=2.1.0
-SUFFIX=_2
+SUFFIX=_4
 
 echo Building Cassandra $CASSVERSION for Mesos
 
@@ -14,8 +14,8 @@ rm apache-cassandra*tar.gz
 
 mv apache-cassandra* cassandra-mesos-${CASSVERSION}${SUFFIX}
 
-cp ../configurator.py cassandra-mesos-${CASSVERSION}${SUFFIX}/
-chmod u+x cassandra-mesos-${CASSVERSION}${SUFFIX}/configurator.py
+cp -R ../launcher cassandra-mesos-${CASSVERSION}${SUFFIX}/
+chmod -R u+x cassandra-mesos-${CASSVERSION}${SUFFIX}/launcher
 
 cp conf/* cassandra-mesos-${CASSVERSION}${SUFFIX}/conf
 

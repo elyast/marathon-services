@@ -2,7 +2,7 @@
 
 # Our elasticsearch-mesos project version follows the Elasticsearch version number
 ESVERSION=1.3.4
-SUFFIX=_3
+SUFFIX=_4
 
 echo Building Elasticsearch $ESVERSION for Mesos
 
@@ -14,8 +14,8 @@ rm elasticsearch-*tar.gz
 
 mv elasticsearch-${ESVERSION} elasticsearch-mesos-${ESVERSION}${SUFFIX}
 
-cp ../configurator.py elasticsearch-mesos-${ESVERSION}${SUFFIX}/
-chmod u+x elasticsearch-mesos-${ESVERSION}${SUFFIX}/configurator.py
+cp -R ../launcher elasticsearch-mesos-${ESVERSION}${SUFFIX}/
+chmod -R u+x elasticsearch-mesos-${ESVERSION}${SUFFIX}/launcher
 
 cp config/* elasticsearch-mesos-${ESVERSION}${SUFFIX}/config
 
