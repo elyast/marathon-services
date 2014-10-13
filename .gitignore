@@ -26,6 +26,8 @@ cassandra-mesos-*
 # elasticsearch mesos distro
 elasticsearch-mesos-*
 
+redis-mesos-*
+kafka-mesos*
 # backup files
 *~
 

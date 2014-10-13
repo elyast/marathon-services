@@ -1,0 +1,21 @@
+{
+    "id": "kafka",
+    "cmd": "cd kafka-mesos_2.9.2-0.8.1.1_1 && ./configurator.py kafka 0 config/server.properties && bin/kafka-server-start.sh config/server.properties",
+    "cpus": 0.5,
+    "mem": 2048.0,
+    "disk": 1000,
+    "env": {
+        "MARATHON_HOST": "hadoop-ha-1",
+        "MARATHON_PORT": 8773,
+        "KAFKA_NET_THREADS_NO": 2,
+        "KAFKA_IO_THREADS_NO": 8,
+        "KAFKA_STORE_PATH": "/mnt/tmp",
+        "KAFKA_PARTITIONS_NO": 2,
+        "KAFKA_LOG_RETENTION_HOURS": 168,
+        "ZK_CONNECTION": "hadoop-zoo-1:2181,hadoop-zoo-2:2181,hadoop-zoo-3:2181"
+    },
+    "instances": 2,
+    "uris": [
+        "http://walrus.escloc57.eecloud.nsn-net.net:8773/services/Walrus/dasp/kafka-mesos_2.9.2-0.8.1.1_1.tgz"
+    ]
+}

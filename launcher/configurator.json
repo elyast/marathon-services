@@ -1,0 +1,16 @@
+{
+    "id": "configurator",
+    "cmd": "cd . && ./configurator.py configurator 3 configurator.py && echo test",
+    "cpus": 0.5,
+    "mem": 2048.0,
+    "disk": 1000,
+    "env": {
+        "MARATHON_ADDRESS": "hadoop-ha-1:8773"
+    },
+    "ports": [0,0,0],
+    "instances": 3,
+    "uris": [
+        "http://walrus.escloc57.eecloud.nsn-net.net:8773/services/Walrus/dasp/configurator.py",
+        "http://walrus.escloc57.eecloud.nsn-net.net:8773/services/Walrus/dasp/marathon_client.py"
+    ]
+}
