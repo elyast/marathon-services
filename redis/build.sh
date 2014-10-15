@@ -1,22 +1,22 @@
 #!/bin/bash -x
 
-# Our elasticsearch-mesos project version follows the Elasticsearch version number
-ESVERSION=1.3.4
-SUFFIX=_3
+# Our redis-mesos project version follows the redis version number
+REDISVERSION=3.0.0-rc1
+SUFFIX=_2
 
-echo Building Elasticsearch $ESVERSION for Mesos
+echo Building Redis $REDISVERSION for Mesos
 
-rm -r elasticsearch-mesos-*
-curl https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${ESVERSION}.tar.gz -o elasticsearch-${ESVERSION}.tar.gz
+rm -r redis-mesos-*
+curl https://dl.dropboxusercontent.com/u/16106115/ubuntu/redis-${REDISVERSION}.tgz -o redis-${REDISVERSION}.tgz
 
-tar xzf elasticsearch-*.tar.gz
-rm elasticsearch-*tar.gz
+tar xzf redis-*.tgz
+rm redis-*tgz
 
-mv elasticsearch-${ESVERSION} elasticsearch-mesos-${ESVERSION}${SUFFIX}
+mv redis-${REDISVERSION} redis-mesos-${REDISVERSION}${SUFFIX}
 
-cp ../configurator.py elasticsearch-mesos-${ESVERSION}${SUFFIX}/
-chmod u+x elasticsearch-mesos-${ESVERSION}${SUFFIX}/configurator.py
+cp -R ../launcher redis-mesos-${REDISVERSION}${SUFFIX}/
+chmod -R u+x redis-mesos-${REDISVERSION}${SUFFIX}/launcher
 
-cp config/* elasticsearch-mesos-${ESVERSION}${SUFFIX}/config
+cp redis.conf redis-mesos-${REDISVERSION}${SUFFIX}/
 
-tar czf elasticsearch-mesos-${ESVERSION}${SUFFIX}.tgz elasticsearch-mesos-${ESVERSION}${SUFFIX}
+tar czf redis-mesos-${REDISVERSION}${SUFFIX}.tgz redis-mesos-${REDISVERSION}${SUFFIX}

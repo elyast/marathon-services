@@ -1,25 +1,15 @@
 {
-    "id": "elasticsearch",
-    "cmd": "cd elasticsearch-mesos* && ./configurator.py elasticsearch 2 config/elasticsearch.yml && bin/elasticsearch",
+    "id": "redis",
+    "cmd": "cd redis-mesos-3.0.0-rc1_2 && launcher/configurator.py redis 0 ./redis.conf && src/redis-server ./redis.conf",
     "cpus": 0.5,
     "mem": 2048.0,
     "disk": 1000,
     "env": {
-        "MARATHON_HOST": "hadoop-ha-1",
-        "MARATHON_PORT": 8773,
-        "ES_SHARDS_NO": 10,
-        "ES_REPLICAS_NO": 3,
-        "ES_CLUSTER_NAME": "hadoop",
-        "ES_STORE_PATH": "/tmp"
+      "MARATHON_ADDRESS": "hadoop-ha-1:8773",
+      "REDIS_MAX_MEMORY": "2048mb"
     },
-    "constraints": [
-        ["hostname", "UNIQUE"]
-    ],
-    "instances": 3,
-    "ports": [
-        9200, 9300
-    ],
+    "instances": 6,
     "uris": [
-        "http://localhost/elasticsearch-mesos-1.3.4_1.tgz"
+        "http://walrus.escloc58.eecloud.nsn-net.net:8773/services/Walrus/dasp/redis-mesos-3.0.0-rc1_2.tgz"
     ]
 }

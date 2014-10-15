@@ -3,7 +3,7 @@
 # Our elasticsearch-mesos project version follows the Elasticsearch version number
 KAFKAVERSION=0.8.1.1
 SCALA_VERSION=2.9.2
-SUFFIX=_4
+SUFFIX=_5
 
 echo Building Kafka_${SCALA_VERSION} $KAFKAVERSION for Mesos
 
@@ -15,8 +15,8 @@ rm kafka_${SCALA_VERSION}-${KAFKAVERSION}.tgz
 
 mv kafka_${SCALA_VERSION}-${KAFKAVERSION} kafka-mesos_${SCALA_VERSION}-${KAFKAVERSION}${SUFFIX}
 
-cp ../configurator.py kafka-mesos_${SCALA_VERSION}-${KAFKAVERSION}${SUFFIX}/
-chmod u+x kafka-mesos_${SCALA_VERSION}-${KAFKAVERSION}${SUFFIX}/configurator.py
+cp -R ../launcher kafka-mesos_${SCALA_VERSION}-${KAFKAVERSION}${SUFFIX}/
+chmod -R u+x kafka-mesos_${SCALA_VERSION}-${KAFKAVERSION}${SUFFIX}/launcher
 
 cp config/* kafka-mesos_${SCALA_VERSION}-${KAFKAVERSION}${SUFFIX}/config
 
