@@ -1,0 +1,2 @@
+current_task_no: ${CURRENT_TASK_NO}
+seeds: ${TASK_IP_PORT0}

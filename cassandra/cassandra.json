@@ -19,6 +19,6 @@
     ],
     "requirePorts": true,
     "uris": [
-        "http://localhost/cassandra-mesos-2.1.0.tgz"
+        "http://localhost/cassandra-mesos-2.1.0_5.tgz"
     ]
 }

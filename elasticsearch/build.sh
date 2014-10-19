@@ -2,7 +2,7 @@
 
 # Our elasticsearch-mesos project version follows the Elasticsearch version number
 ESVERSION=1.3.4
-SUFFIX=_4
+SUFFIX=_5
 
 echo Building Elasticsearch $ESVERSION for Mesos
 

@@ -1,6 +1,6 @@
 {
     "id": "redis",
-    "cmd": "cd redis-mesos-3.0.0-rc1_2 && launcher/configurator.py redis 0 ./redis.conf && src/redis-server ./redis.conf",
+    "cmd": "cd redis-mesos-3.0.0-rc1_3 && launcher/configurator.py redis 3 ./redis.conf,./seed_uri.yml && launcher/launcher.py seed_uri.yml > ./client.log 2>&1 & ; src/redis-server ./redis.conf",
     "cpus": 0.5,
     "mem": 2048.0,
     "disk": 1000,
@@ -10,6 +10,6 @@
     },
     "instances": 6,
     "uris": [
-        "http://walrus.escloc58.eecloud.nsn-net.net:8773/services/Walrus/dasp/redis-mesos-3.0.0-rc1_2.tgz"
+        "http://localhost/redis-mesos-3.0.0-rc1_3.tgz"
     ]
 }

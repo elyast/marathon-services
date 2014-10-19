@@ -3,7 +3,7 @@
 # Our elasticsearch-mesos project version follows the Elasticsearch version number
 KAFKAVERSION=0.8.1.1
 SCALA_VERSION=2.9.2
-SUFFIX=_5
+SUFFIX=_6
 
 echo Building Kafka_${SCALA_VERSION} $KAFKAVERSION for Mesos
 

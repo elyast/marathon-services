@@ -2,7 +2,7 @@
 
 # Our cassandra-mesos project version follows the Cassandra version number
 CASSVERSION=2.1.0
-SUFFIX=_4
+SUFFIX=_5
 
 echo Building Cassandra $CASSVERSION for Mesos
 
