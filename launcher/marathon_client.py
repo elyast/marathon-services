@@ -34,6 +34,11 @@ def _get_marathon_response(http_cli, marathon_address, app_name):
       time.sleep(3)
   return {}
 
+def get_app_instances(marathon_address, app_name):
+  http_cli = _get_url_opener()
+  tasks = _get_marathon_response(http_cli, marathon_address, app_name)
+  return int(tasks['app']['instances'])
+
 # app_name = 'redis'
 # marathon_address = 'hadoop-ha-1:8773'
 def get_app_tasks(marathon_address, app_name):
@@ -55,11 +60,11 @@ def get_hosts(tasks):
 
 # attribute = 'host'
 # attribute = 'ip'
-def get_addresses_by(tasks, attribute='host'):
+def get_addresses_by(tasks, attribute='host', prefix=''):
   adrs = [_get_joined(adr[attribute], adr['ports']) for adr in tasks]
   adrs = map(list, zip(*adrs))
   adrs = [str(','.join(a)) for a in adrs]
-  return {"TASK_{1}_PORT{0}".format(j, attribute.upper()): adrs[j] for j in range(0,len(adrs))}
+  return {"{2}_TASK_{1}_PORT{0}".format(j, attribute.upper(), prefix): adrs[j] for j in range(0,len(adrs))}
 
 
 if __name__ == "__main__":

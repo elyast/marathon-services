@@ -68,7 +68,7 @@ class RedisClient:
   def parse_config(self, str_out):
     entries = [e.split() for e in str_out.split('\n') if len(e) > 0]
     entries = map(self.parse_entry, entries)
-
+    # "myself" not in "master"
     myself = [e for e in entries if "myself" in e['type']]
     peers = [e for e in entries if "myself" not in e['type']]
     peer_masters = [e for e in entries if "myself" not in e['type'] and 'master' in e['type']]
@@ -84,8 +84,8 @@ class RedisClient:
 
   # masters = [{'slaveof': '-', 'type': 'master', 'id': '74eacbf979e0c057aa7975f044e02ac3d9ea069d', 'address': '127.0.0.1:7002'}]
   def add_slave(self, masters, myself):
-    print "Adding slave as {0}".format(myself)
     my_master = random.choice(masters)
+    print "Adding slave as {0} for the guy {1}".format(myself, my_master)
     self.wait(self.replicate, [my_master['id']])
 
   # myself = {'slaveof': '-', 'type': 'myself,master', 'id': 'b4f549ee553acd1f07eaf2a0815340c2ce6cea38', 'address': '127.0.0.1:7001'}
