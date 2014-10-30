@@ -69,7 +69,7 @@ class RedisClient:
         return (success, out)
       else:
         print "Command: {0} with {1} failed, repeating {2}...".format(command, out, t)
-        time.sleep(1)
+        time.sleep(3)
     return (False, None)
 
   def nodes_config(self):
@@ -80,18 +80,32 @@ class RedisClient:
       print "ERR nodes config {0}".format(e.output)
       return (False, {})
 
+  def count_slaves(self, master_id, slaves):
+    return len([x for x in slaves if x['slaveof'] == master_id])
+
+  def choose_least_covered_master(self, masters, slaves):
+    min_index = 0
+    min_value = len(masters) + 1
+    for i in range(0, len(masters)):
+      counter = self.count_slaves(masters[i]['id'], slaves)
+      if counter < min_value:
+        min_value = counter
+        min_index = i
+    return masters[min_index]
+
   # masters = [{'slaveof': '-', 'type': 'master', 'id': '74eacbf979e0c057aa7975f044e02ac3d9ea069d', 'address': '127.0.0.1:7002'}]
-  def add_slave(self, predecesors, current_config):
+  def add_slave(self, no_of_masters_needed, predecesors, current_config):
     my_master = None
     for t in range(0, 30):
       masters = [x for x in current_config['predecesors'] if 'master' in x['flags'] and len(x['slots']) > 0]
-      if len(masters) > 0:
-        my_master = random.choice(masters)
+      slaves = [x for x in current_config['predecesors'] if 'slave' in x['flags']]
+      if len(masters) >= no_of_masters_needed:
+        my_master = self.choose_least_covered_master(masters, slaves)
         break
       else:
         success,current_config = cli.wait_for_config(predecesors)
-        print "Cannot choose master from {0}".format(current_config)
-        time.sleep(1)
+        print "Cannot choose master from {0}".format(masters)
+        time.sleep(3)
 
     print "Adding slave as {0} for the guy {1}".format(current_config['myself'], my_master)
     self.wait(self.replicate, [my_master['id']])
@@ -149,7 +163,7 @@ class RedisClient:
         return (success, {'predecesors': only_predecesors, 'myself': myself})
       else:
         print "Conditions not met {0}, {1}".format(success, only_predecesors)
-        time.sleep(1)
+        time.sleep(3)
 
 # all_nodes = '10.133.5.67:9031,10.133.5.50:32900,10.133.5.37:9131,10.133.5.67:33821,10.133.5.60:9390,10.133.5.37:9362,10.133.5.68:9201,10.133.5.47:9288,10.133.5.67:9015'
 # my_address = '10.133.5.67:9031'
@@ -207,5 +221,5 @@ if __name__ == "__main__":
   if (should_be_master(no_of_masters_needed, current_config)):
     cli.add_master(no_of_masters_needed, current_config)
   else:
-    cli.add_slave(predecesors, current_config)
+    cli.add_slave(no_of_masters_needed, predecesors, current_config)
   print "End of configuring cluster"

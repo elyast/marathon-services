@@ -1,4 +1,4 @@
 current_task_no: ${CURRENT_TASK_NO}
-seeds: ${MARATHON_SEED_IP_PORT0}
+seeds: ${MARATHON_SEED_TASK_IP_PORT0}
 my_address: ${MY_IP}:${PORT0}
 all: ${MARATHON_ALL_TASK_IP_PORT0}

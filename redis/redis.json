@@ -1,6 +1,6 @@
 {
     "id": "redis",
-    "cmd": "cd redis-mesos-3.0.0-rc1_3 && launcher/configurator.py redis 3 ./redis.conf,./seed_uri.yml && launcher/launcher.py seed_uri.yml > ./client.log 2>&1 & src/redis-server ./redis.conf",
+    "cmd": "rm -rf nodes.confg && cd redis-mesos-3.0.0-rc1_3 && ((launcher/configurator.py redis 0.3 ./redis.conf,./seed_uri.yml) && (launcher/launcher.py seed_uri.yml > ./client.log 2>&1 &) && src/redis-server ./redis.conf)",
     "cpus": 0.5,
     "mem": 2048.0,
     "disk": 1000,
