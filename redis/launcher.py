@@ -84,19 +84,28 @@ class RedisClient:
     return len([x for x in slaves if x['slaveof'] == master_id])
 
   def choose_least_covered_master(self, masters, slaves):
-    min_index = 0
-    min_value = len(masters) + 1
+    masters_count = []
     for i in range(0, len(masters)):
       counter = self.count_slaves(masters[i]['id'], slaves)
-      if counter < min_value:
-        min_value = counter
-        min_index = i
-    return masters[min_index]
+      masters_count.append(counter + 1)
+    # masters_count = [1, 1, 1, 1]
+    # masters_count = [1, 5, 6, 2]
+    # masters = [{'id':1}, {'id':2}, {'id':3}, {'id':4}]
+    N = sum(masters_count)
+    masters_universe = []
+    for i in range(0, len(masters)):
+      how_much_needed = N / masters_count[i]
+      for j in range(0, how_much_needed):
+        masters_universe.append(masters[i])
+    random.shuffle(masters_universe)
+    return random.choice(masters_universe)
 
   # masters = [{'slaveof': '-', 'type': 'master', 'id': '74eacbf979e0c057aa7975f044e02ac3d9ea069d', 'address': '127.0.0.1:7002'}]
   def add_slave(self, no_of_masters_needed, predecesors, current_config):
     my_master = None
-    for t in range(0, 30):
+    masters = []
+    slaves = []
+    for t in range(0, 300):
       masters = [x for x in current_config['predecesors'] if 'master' in x['flags'] and len(x['slots']) > 0]
       slaves = [x for x in current_config['predecesors'] if 'slave' in x['flags']]
       if len(masters) >= no_of_masters_needed:
@@ -107,6 +116,8 @@ class RedisClient:
         print "Cannot choose master from {0}".format(masters)
         time.sleep(3)
 
+    if my_master is None:
+      my_master = self.choose_least_covered_master(masters, slaves)
     print "Adding slave as {0} for the guy {1}".format(current_config['myself'], my_master)
     self.wait(self.replicate, [my_master['id']])
 
