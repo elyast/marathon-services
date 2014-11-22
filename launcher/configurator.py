@@ -10,18 +10,19 @@ import sys
 import math
 import marathon_client
 import socket
+from jinja2 import Template
 
+# fname = "/Users/lukaszjastrzebski/Downloads/cassandra.yaml"
+# patterns = {"CASSANDRA_NUM_TOKENS": '25'}
 def file_replace(fname, patterns):
   # pattern is in the file, so perform replace operation.
+  out_fname = fname + ".tmp"
   with open(fname) as f:
-    out_fname = fname + ".tmp"
     out = open(out_fname, "w")
-    for line in f:
-      for i,j in patterns.iteritems():
-        line = line.replace("${%s}" % i,j)
-      out.write(line)
+    template = Template(f.read())
+    out.write(template.render(patterns))
     out.close()
-    os.rename(out_fname, fname)
+  os.rename(out_fname, fname)
 
 def what_is_my_ip():
   return socket.gethostbyname(socket.getfqdn())
@@ -35,7 +36,7 @@ if __name__ == "__main__":
   application = sys.argv[1]
   minimum_seeds_ratio = float(sys.argv[2])
   config_files = sys.argv[3].split(',')
-  marathon_address = os.environ['MARATHON_ADDRESS']
+  marathon_address = os.environ['MARATHON']
   instances = marathon_client.get_app_instances(marathon_address, application)
   minimum_seeds = int(math.ceil(minimum_seeds_ratio * instances))
   task_no = 0

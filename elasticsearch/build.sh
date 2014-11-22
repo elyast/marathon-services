@@ -1,8 +1,8 @@
 #!/bin/bash -x
 
 # Our elasticsearch-mesos project version follows the Elasticsearch version number
-ESVERSION=1.3.4
-SUFFIX=_10
+ESVERSION=1.4.0
+SUFFIX=_11
 
 echo Building Elasticsearch $ESVERSION for Mesos
 

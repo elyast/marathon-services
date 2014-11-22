@@ -1,19 +1,12 @@
 #!/usr/bin/python
 
-import urllib2
 import hashlib
-import json
 import time
 import os
 import re
 import sys
 import socket
-
-def _get_url_opener():
-  proxy_handler = urllib2.ProxyHandler({})
-  opener = urllib2.build_opener(proxy_handler)
-  opener.addheaders = [('Accept', 'application/json')]
-  return opener
+import marathon
 
 def _get_joined(host, ports):
   return ["{0}:{1}".format(host, port) for port in ports]
@@ -21,32 +14,31 @@ def _get_joined(host, ports):
 def get_hash(string):
   return int(int(hashlib.sha1(string).hexdigest(), 16) % ((1<<31)-1))
 
-def _get_marathon_response(http_cli, marathon_address, app_name):
-  for t in range(0,10):
+def _get_marathon_response(marathon_addresses, app_name):
+  m_adrs = marathon_addresses.split(',')
+  for t in range(0,5):
+    cli = marathon.MarathonClient(m_adrs)
     try:
-      marathon_url = "http://{0}/v2/apps/{1}".format(marathon_address, app_name)
-      response = http_cli.open(marathon_url)
-      apps = json.load(response)
-      print "Got: {0}".format(apps)
-      return apps
-    except Exception as e:
+      return cli.get_app(app_name, True)
+    except marathon.exceptions.MarathonError as e:
       print "Got: {0}".format(e)
-      time.sleep(3)
-  return {}
+      time.sleep(6)
+  return None
 
-def get_app_instances(marathon_address, app_name):
-  http_cli = _get_url_opener()
-  tasks = _get_marathon_response(http_cli, marathon_address, app_name)
-  return int(tasks['app']['instances'])
+def get_app_instances(marathon_addresses, app_name):
+  tasks = _get_marathon_response(marathon_addresses, app_name)
+  if tasks is None:
+    return 0
+  return int(tasks.instances)
 
-# app_name = 'redis'
-# marathon_address = 'hadoop-ha-1:8773'
-def get_app_tasks(marathon_address, app_name):
-  http_cli = _get_url_opener()
-  tasks = _get_marathon_response(http_cli, marathon_address, app_name)
-  if len(tasks) == 0:
+# app_name = 'chronos'
+# marathon_addresses = 'http://hadoop-ha-1:8773,http://hadoop-ha-2:8773'
+def get_app_tasks(marathon_addresses, app_name):
+  app = _get_marathon_response(marathon_addresses, app_name)
+  app.tasks
+  if app is None:
     return []
-  tasks = [{'host':x['host'], 'ip':socket.gethostbyname(x['host']), 'ports': x['ports'], 'stagedAt': x['stagedAt']} for x in tasks['app']['tasks']]
+  tasks = [{'host':str(x.host), 'ip':socket.gethostbyname(str(x.host)), 'ports': x.ports, 'stagedAt': str(x.staged_at)} for x in app.tasks]
   tasks = sorted(tasks, key=lambda t: t['stagedAt'])
   return tasks
 

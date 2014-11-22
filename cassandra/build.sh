@@ -1,8 +1,8 @@
 #!/bin/bash -v
 
 # Our cassandra-mesos project version follows the Cassandra version number
-CASSVERSION=2.1.1
-SUFFIX=_10
+CASSVERSION=2.1.2
+SUFFIX=_11
 
 echo Building Cassandra $CASSVERSION for Mesos
 

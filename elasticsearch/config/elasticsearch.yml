@@ -29,7 +29,7 @@
 # Cluster name identifies your cluster for auto-discovery. If you're running
 # multiple clusters on the same network, make sure you're using unique names.
 #
-cluster.name: ${ES_CLUSTER_NAME}
+cluster.name: {{ ES_CLUSTER_NAME }}
 
 
 #################################### Node #####################################
@@ -102,11 +102,11 @@ cluster.name: ${ES_CLUSTER_NAME}
 
 # Set the number of shards (splits) of an index (5 by default):
 #
-index.number_of_shards: ${ES_SHARDS_NO}
+index.number_of_shards: {{ ES_SHARDS_NO }}
 
 # Set the number of replicas (additional copies) of an index (1 by default):
 #
-index.number_of_replicas: ${ES_REPLICAS_NO}
+index.number_of_replicas: {{ ES_REPLICAS_NO }}
 
 # Note, that for development on a local machine, with small indices, it usually
 # makes sense to "disable" the distributed features:
@@ -135,7 +135,7 @@ index.number_of_replicas: ${ES_REPLICAS_NO}
 # Use the Index Status API (<http://localhost:9200/A/_status>) to inspect
 # the index status.
 
-
+{% set store_path = '{0}/{1}'.format(ES_STORE_PATH, ES_CLUSTER_NAME) %}
 #################################### Paths ####################################
 
 # Path to directory containing configuration (this file and logging.yml):
@@ -143,7 +143,7 @@ index.number_of_replicas: ${ES_REPLICAS_NO}
 #path.conf: es/conf
 # Path to directory where to store index data allocated for this node.
 #
-path.data: ${ES_STORE_PATH}/${ES_CLUSTER_NAME}/data
+path.data: {{ store_path }}/data
 #
 # Can optionally include more than one location, causing data to be striped across
 # the locations (a la RAID 0) on a file level, favouring locations with most free
@@ -152,13 +152,13 @@ path.data: ${ES_STORE_PATH}/${ES_CLUSTER_NAME}/data
 #path.data: /path/to/data1,/path/to/data2
 # Path to temporary files:
 #
-path.work: ${ES_STORE_PATH}/${ES_CLUSTER_NAME}/work
+path.work: {{ store_path }}/work
 # Path to log files:
 #
-path.logs: ${ES_STORE_PATH}/${ES_CLUSTER_NAME}/logs
+path.logs: {{ store_path }}/logs
 # Path to where plugins are installed:
 #
-path.plugins: ${ES_STORE_PATH}/${ES_CLUSTER_NAME}/plugins
+path.plugins: {{ store_path }}/plugins
 
 
 #################################### Plugin ###################################
@@ -322,7 +322,7 @@ discovery.zen.ping.multicast.enabled: false
 #
 
 # ElasticSearch on Mesos modification
-discovery.zen.ping.unicast.hosts: [${MARATHON_SEED_NODES}]
+discovery.zen.ping.unicast.hosts: [ {{ MARATHON_SEED_NODES }} ]
 
 # EC2 discovery allows to use AWS EC2 API in order to perform discovery.
 #
