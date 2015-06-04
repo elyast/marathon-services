@@ -1,23 +1,12 @@
 ## Overview
-This project allows you to utilize your Mesos cluster to run services like Cassandra, ElasticSearch of Kafka.
-The scheduler will do all the heavy lifting like downloading package to the worker nodes, distributing the configuration and monitoring the instances. It will automatically modify configuration files to include the selected nodes running service as seed nodes through a template variable.
+This project allows you to utilize your Mesos cluster to run services like Cassandra, ElasticSearch, Kafka or Redis. 
+Each directory contains sample json file that needs to be posted to marathon instance.
+
+### Steps
+
+First run build.sh in corresponding component, then make it available to Marathon/Mesos through HTTP / S3 / HDFS.
+Secondly post json file, with your component URI, please note configuration templates are being processed using Marathon's env config.
 
 ## Known Limitations
 
-Currently the scheduler does not deal with cluster failure in an intelligent manner. These features will be added shortly once we gain some initial feedback.
-
-### As a I type
-```
-Txt box here
-```
-Wonderful experiments using text
-
-
-sadkdfjsdlfkgjkj
-
-### asasdasd
-
-```
-asdasdasd
-
-```
+Currently Mesos / Marathon doesn't offer support for stateful services, the only hope now is to run such service on every host
