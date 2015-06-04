@@ -1,8 +1,8 @@
 #!/bin/bash -x
 
 # Our redis-mesos project version follows the redis version number
-REDISVERSION=3.0.0-rc1
-SUFFIX=_17
+REDISVERSION=3.0.0
+SUFFIX=_1
 
 echo Building Redis $REDISVERSION for Mesos
 
